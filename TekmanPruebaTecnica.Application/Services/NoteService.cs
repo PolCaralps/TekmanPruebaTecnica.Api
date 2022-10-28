@@ -87,10 +87,32 @@ public class NoteService : INoteService
         var selfAvaluation = courseNotes.Where(un => un.Question?.Exercice?.Activity?.Type == ActivityType.SelfEvaluation);
         var test = courseNotes.Where(un => un.Question?.Exercice?.Activity?.Type == ActivityType.Test);
 
-        var activityNote = ((activity.Sum(n => n.Note) * 10) / activity.Count()) * _appSettings.PercentageActivity;
-        var exerciceNote = ((exercice.Sum(n => n.Note) * 10) / exercice.Count()) * _appSettings.PercentatgeExercice;
-        var selfAvaluationNote = ((selfAvaluation.Sum(n => n.Note) * 10) / selfAvaluation.Count()) * _appSettings.PercentatgeSelfEvaluation;
-        var testNote = ((test.Sum(n => n.Note) * 10) / test.Count()) * _appSettings.PercentatgeTest;
+
+        decimal activityNote = 0;
+        decimal exerciceNote = 0;
+        decimal selfAvaluationNote = 0;
+        decimal testNote = 0;
+
+
+        if (activity.Count() > 0) 
+        {
+            activityNote = ((activity.Sum(n => n.Note) * 10) / activity.Count()) * _appSettings.PercentageActivity;
+        }
+
+        if (exercice.Count() > 0)
+        {
+            exerciceNote = ((exercice.Sum(n => n.Note) * 10) / exercice.Count()) * _appSettings.PercentatgeExercice;
+        }
+
+        if (selfAvaluation.Count() > 0)
+        {
+            selfAvaluationNote = ((selfAvaluation.Sum(n => n.Note) * 10) / selfAvaluation.Count()) * _appSettings.PercentatgeSelfEvaluation;
+        }
+
+        if (test.Count() > 0)
+        {
+            testNote = ((test.Sum(n => n.Note) * 10) / test.Count()) * _appSettings.PercentatgeTest;
+        }
 
         return activityNote + exerciceNote + selfAvaluationNote + testNote;
     }
